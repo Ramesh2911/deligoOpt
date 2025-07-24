@@ -6,6 +6,6 @@ import {
 
 const addressRoutes = express.Router();
 
-addressRoutes.get('/address', getAddress);
+addressRoutes.get('/address/:user_id', getAddress);
 
 export default addressRoutes;

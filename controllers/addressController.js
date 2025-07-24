@@ -16,15 +16,24 @@ export const getAddress = async (req, res) => {
       const token = authHeader.split(' ')[1];
       jwt.verify(token, 'deligo@JWT!9dKz');
 
+      const userId = req.params.user_id;
+
+      if (!userId) {
+         return res.status(400).json({
+            status: false,
+            message: 'User ID is required in URL',
+         });
+      }
+
       const [rows] = await con.query(
          `SELECT id, type, you_are_here, user_id, is_active, house AS address_name
-       FROM hr_addresses
-       WHERE user_id = 49`
+          FROM hr_addresses
+          WHERE user_id = ?`, [userId]
       );
 
       return res.status(200).json({
          status: true,
-         message: 'User addresses fetched successfully',
+         message: `User addresses for user_id ${userId} fetched successfully`,
          data: rows,
       });
 
