@@ -45,3 +45,43 @@ export const getAddress = async (req, res) => {
       });
    }
 };
+
+//====updateAddress=====
+export const updateAddress = async (req, res) => {
+   try {
+      const authHeader = req.headers.authorization;
+
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
+         return res.status(401).json({
+            status: false,
+            message: 'Authorization token missing or invalid',
+         });
+      }
+
+      const token = authHeader.split(' ')[1];
+      jwt.verify(token, 'deligo@JWT!9dKz');
+
+      const { user_id, id } = req.params;
+
+      await con.query(
+         `UPDATE hr_addresses SET is_active = 0 WHERE user_id = ?`,
+         [user_id]
+      );
+
+      await con.query(
+         `UPDATE hr_addresses SET is_active = 1 WHERE id = ?`,
+         [id]
+      );
+
+      return res.status(200).json({
+         status: true,
+         message: 'Address updated successfully',
+      });
+   } catch (error) {
+      console.error('Update Address Error:', error.message);
+      return res.status(500).json({
+         status: false,
+         message: 'Server error or invalid token',
+      });
+   }
+};
