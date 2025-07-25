@@ -4,7 +4,7 @@ import { config } from 'dotenv';
 import cors from 'cors';
 import authRoute from './routes/authRoutes.js';
 import addressRoutes from './routes/addressRoutes.js';
-
+import otpRoutes from './routes/otpRoutes.js';
 config({
     path: './config.env'
 });
@@ -22,4 +22,5 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', authRoute);
 app.use('/api', addressRoutes);
+app.use('/api', otpRoutes);
 export default app;
