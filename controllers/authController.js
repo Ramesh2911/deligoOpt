@@ -97,7 +97,9 @@ export const logout = async (req, res) => {
 //======country list ======
 export const getCountries = async (req, res) => {
   try {
-    const [rows] = await con.query('SELECT * FROM hr_countries WHERE is_active = 1');
+    const [rows] = await con.query(
+      'SELECT * FROM hr_countries WHERE is_active = 1 ORDER BY name ASC'
+    );
 
     return res.status(200).json({
       status: true,
